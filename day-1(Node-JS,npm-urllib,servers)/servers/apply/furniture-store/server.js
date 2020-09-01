@@ -23,7 +23,7 @@ app.get('/',function(req,res){
     res.send(" Server's up and running smoothly")
 })
 
-// EXERSICE 2 
+// EXERSICE 2  
 const store = [
     { name: "table", inventory: 3, price: 800 },
     { name: "chair", inventory: 16, price: 120 },
@@ -32,8 +32,8 @@ const store = [
 ]
 
 app.get('/priceCheck/:name', function (req, res) {
-    let name = req.params.name
-    let exists = store.some(i => i.name === name)
+    const name = req.params.name
+    const exists = store.some(i => i.name === name)
     if (!exists) {
         res.send({price:null})
     } else {
@@ -49,7 +49,7 @@ app.get('/priceCheck/:name', function (req, res) {
 
 // EXERCISE 4
 app.get('/buy/:name', function (req, res) {
-    let name = req.params.name
+    const name = req.params.name
     for (i in store) {
         if (store[i].name === name) {
             store[i].inventory--
@@ -64,3 +64,19 @@ app.get('/buy/:name', function (req, res) {
 
 
 // EXERCISES 6+ EXTENSIONS
+
+
+//EXERCISE 6
+app.get('/sale', function (req, res) {
+    const query = req.query.admin
+    if (query == 'true') {
+        const saleStore = store.map(i => {
+            i.price /= 2
+            return i
+        })
+        res.send([`Welcome Admin, the store is on 50% sale for you!`, saleStore])
+    } else {
+        res.send("you're not an admin")
+    }
+
+})
